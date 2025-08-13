@@ -1,0 +1,6 @@
+.vscode
+.env
+result_enriched.csv
+*.log
+database/postgres
+**/__pycache__
