@@ -3,7 +3,7 @@ from typing import Optional, Dict, Tuple
 from sqlalchemy import Engine, create_engine
 from dotenv import load_dotenv
 from tqdm import tqdm
-
+import time
 
 import pandas as pd
 
@@ -45,11 +45,11 @@ def fetch_data_from_db(engine: Engine, table_name: str, company_col: str) -> pd.
 def get_place_info_from_naver(client_id: str, client_secret: str, company_name: str) -> Optional[Dict]:
     """네이버 지역 검색 API로 장소 정보를 검색합니다."""
     headers = {
-        "X-Naver-Client-Id": client_id,
-        "X-Naver-Client-Secret": client_secret,
+        "x-ncp-apigw-api-key-id	": client_id,
+        "x-ncp-apigw-api-key": client_secret,
     }
     params = {"query": company_name, "display": 1} # 가장 정확한 1개 결과만 요청
-    url = "https://openapi.naver.com/v1/search/local.json"
+    url = "https://maps.apigw.ntruss.com/map-geocode/v2"
     
     try:
         response = requests.get(url, headers=headers, params=params)
@@ -65,11 +65,11 @@ def get_place_info_from_naver(client_id: str, client_secret: str, company_name: 
 def get_coords_from_naver(client_id: str, client_secret: str, address: str) -> Optional[Tuple[float, float]]:
     """네이버 지오코딩 API로 주소를 위도/경도로 변환합니다."""
     headers = {
-        "X-Naver-Client-Id": client_id,
-        "X-Naver-Client-Secret": client_secret,
+        "x-ncp-apigw-api-key-id	": client_id,
+        "x-ncp-apigw-api-key": client_secret,
     }
     params = {"query": address}
-    url = "https://openapi.naver.com/v1/map/geocode"
+    url = "https://maps.apigw.ntruss.com/map-geocode/v2"
 
     try:
         response = requests.get(url, headers=headers, params=params)
@@ -124,6 +124,7 @@ def get_lat_lng_and_add_dataframe():
             else:
                 # 검색 결과가 없는 경우
                 results.append({'address': None, 'lat': None, 'lng': None, 'thumbnail': None})
+            time.sleep(0.1)
         
         fatched_df = pd.DataFrame(results)
         final_df = pd.concat([original_df.reset_index(drop=True), fatched_df], axis=1)
