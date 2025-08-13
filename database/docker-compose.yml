@@ -8,9 +8,9 @@ services:
     # env_file: ""
     
     environment:
-      POSTGRES_PASSWORD: reviewschedule
-      POSTGRES_USER: reviewschedule
-      POSTGRES_DB: reviewschedule
+      POSTGRES_PASSWORD: crawrling
+      POSTGRES_USER: crawrling
+      POSTGRES_DB: crawrling
     
     ports:
       - "5431:5432"

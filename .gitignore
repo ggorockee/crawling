@@ -4,3 +4,6 @@ result_enriched.csv
 *.log
 database/postgres
 **/__pycache__
+.idea
+
+api.http
